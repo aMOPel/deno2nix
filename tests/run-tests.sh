@@ -49,3 +49,7 @@ rm -f output1.txt output2.txt
 cp $(nix-build . -A checks.tests.buildDenoPackage-e2e-tests.sub1) output1.txt
 $(nix-build . -A checks.tests.buildDenoPackage-e2e-tests.sub1Binary)/bin/* --text sub1 >output2.txt
 diff output1.txt output2.txt
+
+# installation test
+nix build -f . checks.tests.installation-test
+nix build -f . checks.tests.installation-test --rebuild

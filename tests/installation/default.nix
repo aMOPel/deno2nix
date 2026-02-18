@@ -14,20 +14,22 @@ let
   # (optional) inject your own nixpkgs if necessary
   deno2nix = import deno2nixSrc { inherit pkgs; };
 in
-deno2nix.lib.buildDenoPackage {
-  pname = "test-deno-build";
-  version = "0.1.0";
-  denoDepsHash = "";
-  src = pkgs.nix-gitignore.gitignoreSource [ ] ./.;
-  # (optional) override the deno version
-  denoPackage = pkgs.deno;
-  denoTaskSuffix = ">out.txt";
-  extraTaskFlags = [
-    "--text"
-    "installation-test"
-  ];
-  installPhase = ''
-    deno --version >>out.txt
-    cp out.txt $out
-  '';
+{
+  installation-test = deno2nix.lib.buildDenoPackage {
+    pname = "test-deno-build";
+    version = "0.1.0";
+    denoDepsHash = "sha256-GnsvnxzUvWPO9MbGfuclSYXzXdfMhLEX9SKi2Z/yooc=";
+    src = pkgs.nix-gitignore.gitignoreSource [ ] ./.;
+    # (optional) override the deno version
+    denoPackage = pkgs.deno;
+    denoTaskSuffix = ">out.txt";
+    extraTaskFlags = [
+      "--text"
+      "installation-test"
+    ];
+    installPhase = ''
+      deno --version >>out.txt
+      cp out.txt $out
+    '';
+  };
 }
