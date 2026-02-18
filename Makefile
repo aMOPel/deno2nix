@@ -15,8 +15,6 @@ tests:
 	nix build -f . checks.tests.sub1Binary.denoDeps --rebuild
 	nix build -f . checks.tests.readma-cli-linux.denoDeps
 	nix build -f . checks.tests.readma-cli-linux.denoDeps --rebuild
-	nix build -f . checks.tests.readma-cli-linux.denoDeps
-	nix build -f . checks.tests.readma-cli-linux.denoDeps --rebuild
 	nix build -f . checks.tests.fresh-init-cli-linux.denoDeps
 	nix build -f . checks.tests.fresh-init-cli-linux.denoDeps --rebuild
 	nix build -f . checks.tests.with-npm-linux.denoDeps
@@ -30,8 +28,6 @@ tests:
 	nix build -f . checks.tests.sub2 --rebuild
 	nix build -f . checks.tests.sub1Binary
 	# nix build -f . checks.tests.sub1Binary --rebuild
-	nix build -f . checks.tests.readma-cli-linux
-	# nix build -f . checks.tests.readma-cli-linux --rebuild
 	nix build -f . checks.tests.readma-cli-linux
 	# nix build -f . checks.tests.readma-cli-linux --rebuild
 	nix build -f . checks.tests.fresh-init-cli-linux
