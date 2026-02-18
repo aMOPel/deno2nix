@@ -214,6 +214,7 @@ in
   globalArgs ? { },
 }:
 let
+  hash' = if hash == "" then lib.fakeHash else hash;
 
   transformedDenoLock = transformDenoLock (
     {
@@ -225,10 +226,10 @@ let
 
   fetched = singleFodFetcher (
     {
+      hash = hash';
       inherit
         denoLock
         transformedDenoLock
-        hash
         fodNameGenerator
         enableAutoFodInvalidation
         argNamesForFodInvalidation

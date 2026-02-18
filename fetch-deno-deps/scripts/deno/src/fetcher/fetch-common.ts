@@ -79,7 +79,13 @@ export async function verifyIntegrity(
   const expectedIntegrity = normalizeHashPrefix(p.hash);
 
   if (actualIntegrity !== expectedIntegrity) {
-    throw `integrity check failed during fetch to ${p.url}: ${actualIntegrity} !== ${expectedIntegrity}`;
+    if (["raw.githubusercontent.com"].includes(p.meta.registry)
+      && p.url.match(/.*\/refs\/heads\/.*/)
+    ) {
+      console.error(`integrity check failed during fetch to ${p.url}: ${actualIntegrity} !== ${expectedIntegrity}`, "but continuing, because the url might be pointing to a mutable file");
+    } else {
+      throw `integrity check failed during fetch to ${p.url}: ${actualIntegrity} !== ${expectedIntegrity}`;
+    }
   }
 }
 

@@ -39,7 +39,7 @@ in
       ''
       + wrappers;
       checkPhase = ''
-        deno test
+        DENO_DIR=./.deno deno test
       '';
       doCheck = true;
       nativeBuildInputs = [
