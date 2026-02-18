@@ -7,7 +7,7 @@
   zip,
   jq,
   fetchDenoDeps,
-  buildPackages,
+  denoHooks,
   lib,
 }:
 {
@@ -106,8 +106,8 @@ let
 
   args' = builtins.removeAttrs args [ "denoDepsInjectedEnvVars" ];
 
-  denoHooks =
-    (buildPackages.denoHooks.override {
+  denoHooks' =
+    (denoHooks.override {
       denort = denortPackage;
     })
       {
@@ -148,9 +148,9 @@ stdenvNoCC.mkDerivation (
 
     nativeBuildInputs = nativeBuildInputs ++ [
       # Prefer passed hooks
-      (if denoConfigHook != null then denoConfigHook else denoHooks.denoConfigHook)
-      (if denoBuildHook != null then denoBuildHook else denoHooks.denoBuildHook)
-      (if denoInstallHook != null then denoInstallHook else denoHooks.denoInstallHook)
+      (if denoConfigHook != null then denoConfigHook else denoHooks'.denoConfigHook)
+      (if denoBuildHook != null then denoBuildHook else denoHooks'.denoBuildHook)
+      (if denoInstallHook != null then denoInstallHook else denoHooks'.denoInstallHook)
       denoPackage
       diffutils
       zip
