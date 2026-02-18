@@ -84,6 +84,8 @@ export type RegistryJson = {
   "_deno.etag": string;
   versions: { [version: string]: any };
   name: string;
+  // added at the latest in v2.6.9
+  time: { [version: string]: string }
 };
 
 export type MetaJson = {
@@ -228,10 +230,12 @@ export function pruneRegistryJson(
     "_deno.etag": "",
     "dist-tags": {},
     versions: {},
+    time: {},
   };
 
   for (const version of Object.keys(packageInfoByVersion)) {
     newRegistryJson.versions[version] = registryJson.versions[version];
+    newRegistryJson.time[version] = "1970-01-01T00:00:00.000Z";
   }
 
   return newRegistryJson;
