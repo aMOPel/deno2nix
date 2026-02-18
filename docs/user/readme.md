@@ -355,7 +355,7 @@ rec {
 - *`denoPackage`* (Derivation; optional): The Deno CLI used for all `deno` commands inside the build.
     - _Default:_ `pkgs.deno`
 
-### fetchDenoDeps
+### fetchDenoDeps standalone
 
 You can also access the deno deps derivation.
 
