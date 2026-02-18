@@ -22,7 +22,7 @@ tests:
 	nix build -f . checks.tests.with-npm-linux
 	# nix build -f . checks.tests.with-npm-linux --rebuild
 	nix build -f . checks.tests.without-npm-linux
-	# nix build -f . checks.tests.without-npm-linux --rebuild
+	nix build -f . checks.tests.without-npm-linux --rebuild
 
 	nix build -f . checks.tests.sub1.denoDeps
 	nix build -f . checks.tests.sub1.denoDeps --rebuild

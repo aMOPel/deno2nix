@@ -1,7 +1,11 @@
 let
   sources = import ./lon.nix;
-  pkgs = import sources.nixpkgs { };
-
+  nixpkgs = import sources.nixpkgs { };
+in
+{
+  pkgs ? nixpkgs,
+}:
+let
   fetchDenoDeps = pkgs.callPackage ./fetch-deno-deps/default.nix { };
   buildDenoPackage = pkgs.callPackage ./build-deno-package/default.nix {
     inherit denoHooks fetchDenoDeps denort;
