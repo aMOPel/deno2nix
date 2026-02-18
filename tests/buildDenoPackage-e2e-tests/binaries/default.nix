@@ -5,13 +5,13 @@
     version = "0.1.0";
     src = nix-gitignore.gitignoreSource [ ] ./just-jsr;
     binaryEntrypointPath = "./main.ts";
-    denoDepsHash = "";
+    denoDepsHash = "sha256-CV/2kYxYYA1g5/dwSKiC4h1F2+6seTItTLBYQoSt0og=";
     targetSystem = "x86_64-linux";
   };
   with-https-linux = buildDenoPackage rec {
     pname = "test-deno-build-binaries-with-https-${targetSystem}";
     version = "0.1.0";
-    denoDepsHash = "";
+    denoDepsHash = "sha256-O3P2x8kkD92AdbuRIUNp+OJN54ymRhSS1Xscu8dWIGY=";
     src = nix-gitignore.gitignoreSource [ ] ./with-https;
     denoCompileFlags = [ "--allow-import=unpkg.com:443,jsr.io:443,deno.land:443,esm.sh:443" "--no-check" ];
     binaryEntrypointPath = "./main.ts";
@@ -20,7 +20,7 @@
   with-https-and-npm-linux = buildDenoPackage rec {
     pname = "test-deno-build-binaries-with-https-and-npm-${targetSystem}";
     version = "0.1.0";
-    denoDepsHash = "";
+    denoDepsHash = "sha256-TrYrURHG57nGLTSrTEqOGIkQXcpP81NDrIvGVtgwNv0=";
     src = nix-gitignore.gitignoreSource [ ] ./with-https-and-npm;
     denoCompileFlags = [ "--allow-import=unpkg.com:443,jsr.io:443,deno.land:443,esm.sh:443" "--no-check" ];
     binaryEntrypointPath = "./main.ts";
