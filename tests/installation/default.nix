@@ -11,7 +11,7 @@ let
   #   sha256 = "sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
   # };
 
-  # inject your own nixpkgs
+  # (optional) inject your own nixpkgs if necessary
   deno2nix = import deno2nixSrc { inherit pkgs; };
 in
 deno2nix.lib.buildDenoPackage {
@@ -19,6 +19,8 @@ deno2nix.lib.buildDenoPackage {
   version = "0.1.0";
   denoDepsHash = "sha256-RqzZHvDflga7fAz2GrSy27FiZkfgqZE6jpsvoS986I8=";
   src = pkgs.nix-gitignore.gitignoreSource [ ] ./.;
+  # (optional) override the deno version
+  denoPackage = pkgs.deno;
   denoTaskSuffix = ">out.txt";
   extraTaskFlags = [
     "--text"

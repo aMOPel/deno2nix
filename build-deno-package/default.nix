@@ -2,7 +2,6 @@
 {
   stdenvNoCC,
   deno,
-  denort,
   diffutils,
   zip,
   jq,
@@ -55,7 +54,7 @@
   # The package used for every deno command in the build
   denoPackage ? deno,
   # The package used as the runtime that is bundled with the the src to create the binary.
-  denortPackage ? denort,
+  denortPackage ? (import ../denort/default.nix { deno = denoPackage; inherit lib; }),
   # The script to run to build the project.
   # You still need to specify in the installPhase, what artifacts to copy to `$out`.
   denoTaskScript ? "build",

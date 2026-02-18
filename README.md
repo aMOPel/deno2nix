@@ -28,7 +28,7 @@ let
     sha256 = "sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
   };
 
-  # inject your own nixpkgs
+  # (optional) inject your own nixpkgs if needed
   deno2nix = import deno2nixSrc { inherit pkgs; };
 in
 {
@@ -44,6 +44,8 @@ deno2nix.lib.fetchDenoDeps {
     name = "denoDeps";
     hash = "sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=";
     src = nix-gitignore.gitignoreSource [ ] ./.;
+    # (optional) override the deno version
+    denoPackage = pkgs.deno;
 }
 ```
 

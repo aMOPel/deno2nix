@@ -8,9 +8,9 @@ in
 let
   fetchDenoDeps = pkgs.callPackage ./fetch-deno-deps/default.nix { };
   buildDenoPackage = pkgs.callPackage ./build-deno-package/default.nix {
-    inherit denoHooks fetchDenoDeps denort;
+    inherit denoHooks fetchDenoDeps;
   };
-  denoHooks = pkgs.callPackage ./build-deno-package/hooks/default.nix { inherit denort; };
+  denoHooks = pkgs.callPackage ./build-deno-package/hooks/default.nix { denort = null; };
 
   denort = pkgs.callPackage ./denort/default.nix { };
 

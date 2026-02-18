@@ -190,7 +190,7 @@ Related options:
     - _Default:_ `null`
     - It's prefixed by `denoWorkspacePath`.
 - *`denortPackage`* (Derivation; optional): The package used as the Deno runtime, which is bundled with the JavaScript code to create the binary.
-    - _Default:_ `pkgs.denort`
+    - _Default:_ `denort` derived from `denoPackage`
     - Don't use `pkgs.deno` for this, since that is the full Deno CLI, with all the development tooling.
     - If you're cross compiling, this needs to be the `denort` of the `hostPlatform`.
 
