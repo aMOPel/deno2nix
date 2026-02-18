@@ -6,7 +6,7 @@
   zip,
   jq,
   fetchDenoDeps,
-  buildPackages,
+  denoHooks,
   lib,
   callPackage,
 }:
@@ -26,18 +26,14 @@ in
   # TODO: impure env vars passthru for npm tokens and deno auth tokens
   # TODO: source overrides like in buildNpmPackage
   denoDeps ? fetchDenoDeps {
-    inherit
-      vendorJsonName
-      npmJsonName
-      ;
     denoLock = src + "/deno.lock";
-    name = "${name}-deno-deps";
+    pname = "${name}-deno-deps";
     hash = denoDepsHash;
   },
   # The package used for every deno command in the build
   denoPackage ? deno,
   # The package used as the runtime that is bundled with the the src to create the binary.
-  denortPackage ? deno,
+  denortPackage ? (import ../denort/default.nix { deno = denoPackage; inherit lib; }),
   # The script to run to build the project.
   # You still need to specify in the installPhase, what artifacts to copy to `$out`.
   denoTaskScript ? "build",
@@ -91,7 +87,7 @@ let
 
   args' = builtins.removeAttrs args [ "denoDepsInjectedEnvVars" ];
 
-  denoHooks = buildPackages.denoHooks {
+  denoHooks' = denoHooks {
     inherit
       denoTaskSuffix
       denoTaskPrefix
@@ -139,9 +135,9 @@ stdenvNoCC.mkDerivation (
 
     nativeBuildInputs = nativeBuildInputs ++ [
       # Prefer passed hooks
-      (if denoConfigHook != null then denoConfigHook else denoHooks.denoConfigHook)
-      (if denoBuildHook != null then denoBuildHook else denoHooks.denoBuildHook)
-      (if denoInstallHook != null then denoInstallHook else denoHooks.denoInstallHook)
+      (if denoConfigHook != null then denoConfigHook else denoHooks'.denoConfigHook)
+      (if denoBuildHook != null then denoBuildHook else denoHooks'.denoBuildHook)
+      (if denoInstallHook != null then denoInstallHook else denoHooks'.denoInstallHook)
       denoPackage
       diffutils
       zip

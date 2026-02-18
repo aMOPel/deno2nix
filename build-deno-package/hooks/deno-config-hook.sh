@@ -62,10 +62,18 @@ denoConfigHook() {
   echo "Installing dependencies"
 
   installDeps() {
-    mkdir -p $DENO_DIR
+    deno_dir=$(realpath "$DENO_DIR")
+    vendor_dir=$(realpath "$vendorDir")
+    mkdir -p $deno_dir
     mkdir -p $vendorDir
-    file-structure-transformer-npm --in-path "$denoDeps/$npmJsonName" --cache-path $DENO_DIR
-    file-structure-transformer-vendor --cache-path $(pwd)/$DENO_DIR --vendor-path $(pwd)/$vendorDir --url-file-map "$denoDeps/$vendorJsonName"
+    file-structure-transformer-npm \
+      --deno-dir-path "$deno_dir" \
+      --common-lock-npm-path "$denoDeps/npm.json"
+    file-structure-transformer-vendor \
+      --deno-dir-path "$deno_dir" \
+      --vendor-dir-path "$vendor_dir" \
+      --common-lock-jsr-path "$denoDeps/jsr.json" \
+      --common-lock-https-path "$denoDeps/https.json"
   }
   installDeps
 

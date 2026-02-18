@@ -177,90 +177,87 @@ let
 
 in
 {
-  fetchDenoDeps =
+  denoLock,
+  hash ? lib.fakeHash,
+  denoDir ? ".deno",
+  vendorDir ? "vendor",
+  pname ? "",
+  version ? "",
+
+  # whether to enable automatic invalidation of the fetcher fod (fixed output derivation)
+  # use together with `fodNameGenerator` and `argNamesForFodInvalidation`
+  # by default all derivation args in `argNamesForFodInvalidation` are used to create a hash,
+  # which becomes part of the name of the fetcher fod, if any of those args change, the fod gets a new name and is invalidated
+  #
+  # we do this to make sure that we become aware of bugs in the fetcher immediately,
+  # e.g. after breaking changes in deno upstream force source changes to the fetcher,
+  # and not after years, when the fods slowly get removed from the nix cache
+  enableAutoFodInvalidation ? true,
+  # function to generate the name of fetcher fod, see `enableAutoFodInvalidation`
+  fodNameGenerator ?
+    argsForFodInvalidation: pname: version:
+    "${builtins.hashString "sha1" (builtins.toJSON argsForFodInvalidation)}-${pname}-${version}",
+  # invalidate fod, if any of these derivation args change, see `enableAutoFodInvalidation`
+  argNamesForFodInvalidation ? [
+    "src"
+    "dontUnpack"
+    "buildPhase"
+    "nativeBuildInputs"
+  ],
+  # derivation args passed to step 1, the deno lock file transformer step
+  transformDenoLockArgs ? { },
+  # derivation args passed to step 2, the fetcher step
+  fetcherArgs ? { },
+  # derivation args passed to step 3, the file structure transformer step
+  transformFileStructureArgs ? { },
+  # derivation args passed to all 3 steps
+  globalArgs ? { },
+}:
+let
+
+  transformedDenoLock = transformDenoLock (
     {
-      denoLock,
-      hash ? lib.fakeHash,
-      denoDir ? ".deno",
-      vendorDir ? "vendor",
-      pname ? "",
-      version ? "",
+      inherit denoLock pname version;
+    }
+    // globalArgs
+    // transformDenoLockArgs
+  );
 
-      # whether to enable automatic invalidation of the fetcher fod (fixed output derivation)
-      # use together with `fodNameGenerator` and `argNamesForFodInvalidation`
-      # by default all derivation args in `argNamesForFodInvalidation` are used to create a hash,
-      # which becomes part of the name of the fetcher fod, if any of those args change, the fod gets a new name and is invalidated
-      #
-      # we do this to make sure that we become aware of bugs in the fetcher immediately,
-      # e.g. after breaking changes in deno upstream force source changes to the fetcher,
-      # and not after years, when the fods slowly get removed from the nix cache
-      enableAutoFodInvalidation ? true,
-      # function to generate the name of fetcher fod, see `enableAutoFodInvalidation`
-      fodNameGenerator ?
-        argsForFodInvalidation: pname: version:
-        "${builtins.hashString "sha1" (builtins.toJSON argsForFodInvalidation)}-${pname}-${version}",
-      # invalidate fod, if any of these derivation args change, see `enableAutoFodInvalidation`
-      argNamesForFodInvalidation ? [
-        "src"
-        "dontUnpack"
-        "buildPhase"
-        "nativeBuildInputs"
-      ],
-      # derivation args passed to step 1, the deno lock file transformer step
-      transformDenoLockArgs ? { },
-      # derivation args passed to step 2, the fetcher step
-      fetcherArgs ? { },
-      # derivation args passed to step 3, the file structure transformer step
-      transformFileStructureArgs ? { },
-      # derivation args passed to all 3 steps
-      globalArgs ? { },
-    }:
-    let
-
-      transformedDenoLock = transformDenoLock (
-        {
-          inherit denoLock pname version;
-        }
-        // globalArgs
-        // transformDenoLockArgs
-      );
-
-      fetched = singleFodFetcher (
-        {
-          inherit
-            denoLock
-            transformedDenoLock
-            hash
-            fodNameGenerator
-            enableAutoFodInvalidation
-            argNamesForFodInvalidation
-            pname
-            version
-            ;
-        }
-        // globalArgs
-        // fetcherArgs
-      );
-
-      denoDeps = transformFiles (
-        {
-          inherit
-            fetched
-            denoDir
-            vendorDir
-            pname
-            version
-            ;
-        }
-        // globalArgs
-        // transformFileStructureArgs
-      );
-    in
+  fetched = singleFodFetcher (
     {
       inherit
+        denoLock
         transformedDenoLock
-        fetched
-        denoDeps
+        hash
+        fodNameGenerator
+        enableAutoFodInvalidation
+        argNamesForFodInvalidation
+        pname
+        version
         ;
-    };
+    }
+    // globalArgs
+    // fetcherArgs
+  );
+
+  denoDeps = transformFiles (
+    {
+      inherit
+        fetched
+        denoDir
+        vendorDir
+        pname
+        version
+        ;
+    }
+    // globalArgs
+    // transformFileStructureArgs
+  );
+in
+{
+  inherit
+    transformedDenoLock
+    fetched
+    denoDeps
+    ;
 }

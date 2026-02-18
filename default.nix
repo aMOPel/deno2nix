@@ -10,7 +10,14 @@ let
   buildDenoPackage = pkgs.callPackage ./build-deno-package/default.nix {
     inherit denoHooks fetchDenoDeps;
   };
-  denoHooks = pkgs.callPackage ./build-deno-package/hooks/default.nix { denort = null; };
+  denoHooks = pkgs.callPackage ./build-deno-package/hooks/default.nix { };
+
+  fetch-deno-deps-scripts = {
+    deno = (pkgs.callPackage ./fetch-deno-deps/scripts/deno/default.nix { }).fetch-deno-deps-scripts;
+    rust =
+      (pkgs.callPackage ./fetch-deno-deps/scripts/rust/file-structure-transformer-vendor/default.nix { })
+      .file-structure-transformer-vendor;
+  };
 
   denort = pkgs.callPackage ./denort/default.nix { };
 
@@ -19,6 +26,8 @@ let
       (self: super: {
         inherit
           buildDenoPackage
+          fetch-deno-deps-scripts
+          fetchDenoDeps
           ;
       })
     ];
