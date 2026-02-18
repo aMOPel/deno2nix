@@ -23,12 +23,12 @@
   fresh-init-cli-linux = buildDenoPackage {
     pname = "fresh-init-cli";
     version = "";
-    denoDepsHash = "sha256-rdOIvl+6lWc1HCPoZ8zj3V3U0qol/HqMsWjzH2U1G50=";
+    denoDepsHash = "sha256-ENtUPS9vF25yBZQrMR+lCoIk8ParRW8QkolPNtmdZa0=";
     src = fetchFromGitHub {
       owner = "denoland";
       repo = "fresh";
-      rev = "4cc76aefed73ec15e77d5314ae57f0014387e50b";
-      hash = "sha256-6hieqTWFnKsEtkyiVAeDXhpFFSnTOuJ7qh0ZX/AW46o=";
+      rev = "c7c341b695bad8d0f3e3575e5fa9c82e0fa28bd4";
+      hash = "sha256-bC4akr4Wt4sRqGkgjNuXztW8Q6YBLBsbuIOhsXH8NQU=";
     };
     denoWorkspacePath = "./init";
     binaryEntrypointPath = "./src/mod.ts";
