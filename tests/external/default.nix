@@ -34,34 +34,35 @@
     binaryEntrypointPath = "./src/mod.ts";
     targetSystem = "x86_64-linux";
   };
-  invidious-companion-cli-linux = buildDenoPackage {
-    pname = "invidious-companion-cli";
-    version = "";
-    denoDepsHash = "";
-    src = fetchFromGitHub {
-      owner = "iv-org";
-      repo = "invidious-companion";
-      rev = "6c76cab5b22ee2d533fd115135d0bd397aa4d938";
-      hash = "sha256-qWLDqrJk0PySFcx2ke8DRzxK+LQfT4dKRFVgEd3EYsI=";
-    };
-    binaryEntrypointPath = "src/main.ts";
-    denoCompileFlags = [
-      "--include=./src/lib/helpers/youtubePlayerReq.ts"
-      "--include=./src/lib/helpers/getFetchClient.ts"
-      "--allow-import=github.com:443,jsr.io:443,cdn.jsdelivr.net:443,esm.sh:443,deno.land:443"
-      "--allow-net"
-      "--allow-env"
-      "--allow-read"
-      "--allow-sys=hostname"
-      "--allow-write=/var/tmp/youtubei.js"
-    ];
-    denoInstallFlags = [
-      "--allow-scripts"
-      "--frozen"
-      "--cached-only"
-      "--entrypoint"
-      "src/main.ts"
-    ];
-    targetSystem = "x86_64-linux";
-  };
+  # invidious-companion does not properly update their lockfile
+  # invidious-companion-cli-linux = buildDenoPackage {
+  #   pname = "invidious-companion-cli";
+  #   version = "";
+  #   denoDepsHash = "";
+  #   src = fetchFromGitHub {
+  #     owner = "iv-org";
+  #     repo = "invidious-companion";
+  #     rev = "6c76cab5b22ee2d533fd115135d0bd397aa4d938";
+  #     hash = "sha256-qWLDqrJk0PySFcx2ke8DRzxK+LQfT4dKRFVgEd3EYsI=";
+  #   };
+  #   binaryEntrypointPath = "src/main.ts";
+  #   denoCompileFlags = [
+  #     "--include=./src/lib/helpers/youtubePlayerReq.ts"
+  #     "--include=./src/lib/helpers/getFetchClient.ts"
+  #     "--allow-import=github.com:443,jsr.io:443,cdn.jsdelivr.net:443,esm.sh:443,deno.land:443"
+  #     "--allow-net"
+  #     "--allow-env"
+  #     "--allow-read"
+  #     "--allow-sys=hostname"
+  #     "--allow-write=/var/tmp/youtubei.js"
+  #   ];
+  #   denoInstallFlags = [
+  #     "--allow-scripts"
+  #     "--frozen"
+  #     "--cached-only"
+  #     "--entrypoint"
+  #     "src/main.ts"
+  #   ];
+  #   targetSystem = "x86_64-linux";
+  # };
 }
