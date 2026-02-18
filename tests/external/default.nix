@@ -3,7 +3,7 @@
   readma-cli-linux = buildDenoPackage rec {
     pname = "readma-cli";
     version = "2.11.0";
-    denoDepsHash = "sha256-+l7qn/VCsbQHNBgNv3kRxonYHpeszkE6bbjO3GCfp/0=";
+    denoDepsHash = "sha256-aBAohptlOL0mcYByVunK5/bQPmKTmiBjXz9GJWLUkDo=";
     src = fetchFromGitHub {
       owner = "elcoosp";
       repo = "readma";
@@ -23,7 +23,7 @@
   fresh-init-cli-linux = buildDenoPackage {
     pname = "fresh-init-cli";
     version = "";
-    denoDepsHash = "sha256-pi+yCb6yq043XDhndOSPb2MtY2ooY9z+Sp+qnszK4+A=";
+    denoDepsHash = "sha256-szZYBYt8Ji3gwIw+mp8viW5KEWAyiENjhmwoDTQi3Aw=";
     src = fetchFromGitHub {
       owner = "denoland";
       repo = "fresh";
