@@ -21,9 +21,6 @@ Since it uses the deno cli, it naturally has all the fetcher features of the den
 **WARNING:** For newer deno versions, the `fetchDenoDeps` derivations can become non-reproducible,
 if deno upstream adds more non-reproducible data to the dependency directories (`DENO_DIR`, vendir-dir, node_modules)
 
-- `deno.lock`
-- their internal formats for `DENO_DIR` and vendor-dir
-
 See [**deno-cli-fetcher branch**](https://github.com/aMOPel/deno2nix/tree/deno-cli-fetcher)
 
 This was merged and later reverted, since this is not good practice in nixpkgs,
