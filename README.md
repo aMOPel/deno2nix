@@ -12,11 +12,35 @@ This project provides nix build-helpers to create derivations from deno projects
 - supports workspaces
 - supports all native deno dependency fetching features, since it just uses the deno cli under the hood
 
+## Installation
+
+```nix
+let
+  # deno 2.6.4
+  pkgs = import (builtins.fetchTarball {
+    url = "https://github.com/NixOS/nixpkgs/archive/4c579d27f4e9ae093e3e0326a0b7bf80e106df1c.tar.gz";
+  }) { };
+  deno2nixSrc = pkgs.fetchFromGithub {
+    repo = "deno2nix";
+    owner = "aMOPel";
+    # TODO: update rev
+    rev = "117817488569489bfe3a4e3ae0b7350206afaed1";
+    sha256 = "sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
+  };
+
+  # inject your own nixpkgs
+  deno2nix = import deno2nixSrc { inherit pkgs; };
+in
+{
+  # ...
+}
+```
+
 ## Usage
 
 Derivation with deno dependencies
 ```nix
-fetchDenoDeps {
+deno2nix.lib.fetchDenoDeps {
     name = "denoDeps";
     hash = "sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=";
     src = nix-gitignore.gitignoreSource [ ] ./.;
@@ -25,7 +49,7 @@ fetchDenoDeps {
 
 Binary from deno project
 ```nix
-buildDenoPackage {
+deno2nix.lib.buildDenoPackage {
   pname = "myPackage";
   version = "0.1.0";
   denoDepsHash = "sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
@@ -45,7 +69,7 @@ Artifact from executing deno project
 
 ```nix
 { buildDenoPackage, nix-gitignore }:
-buildDenoPackage {
+deno2nix.lib.buildDenoPackage {
   pname = "myPackage";
   version = "0.1.0";
   denoDepsHash = "sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
