@@ -69,6 +69,8 @@ in
   denoTaskPrefix ? "",
   # Unquoted string injected after `deno task` and all its flags
   denoTaskSuffix ? "",
+  # If the project links external workspaces - they need to be provided explicitly
+  denoLinks ? [ ],
   ...
 }@args:
 let
@@ -85,7 +87,10 @@ let
   extraTaskFlags_ = builtins.concatStringsSep " " extraTaskFlags;
   extraCompileFlags_ = builtins.concatStringsSep " " extraCompileFlags;
 
-  args' = builtins.removeAttrs args [ "denoDepsInjectedEnvVars" ];
+  args' = builtins.removeAttrs args [
+    "denoDepsInjectedEnvVars"
+    "denoLinks"
+  ];
 
   denoHooks' = denoHooks {
     inherit
@@ -157,5 +162,8 @@ stdenvNoCC.mkDerivation (
     meta = (args.meta or { }) // {
       platforms = args.meta.platforms or denoPackage.meta.platforms;
     };
+  }
+  // lib.optionalAttrs (denoLinks != [ ]) {
+    denoLinksJson = builtins.toJSON denoLinks;
   }
 )
