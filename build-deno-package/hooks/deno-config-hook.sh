@@ -59,6 +59,13 @@ denoConfigHook() {
   echo "Adding vendor to deno.json"
   useVendor
 
+  if [ -n "${denoLinksJson-}" ]; then
+    echo "Rewriting links"
+    jq --argjson links "$denoLinksJson" '.links = $links' deno.json >temp.json &&
+      rm -f deno.json &&
+      mv temp.json deno.json
+  fi
+
   echo "Installing dependencies"
 
   installDeps() {
