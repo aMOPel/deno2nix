@@ -354,7 +354,7 @@ Deno.test("pruneMetaJson", () => {
       expectedValue: {
         scope: "std",
         name: "cli",
-        latest: "",
+        latest: "1.0.17",
         versions: { "1.0.17": {} },
       },
     },
@@ -395,7 +395,7 @@ Deno.test("pruneMetaJson", () => {
       expectedValue: {
         scope: "luca",
         name: "cases",
-        latest: "",
+        latest: "1.0.0",
         versions: { "1.0.0": {} },
       },
     },
@@ -1041,7 +1041,9 @@ Deno.test("pruneRegistryJson", () => {
             deprecated: null,
           },
         },
-        "dist-tags": {},
+        "dist-tags": {
+          latest: "1.2.0",
+        },
       },
     },
   ];
