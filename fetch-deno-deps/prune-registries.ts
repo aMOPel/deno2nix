@@ -236,6 +236,7 @@ export function pruneRegistryJson(
   for (const version of Object.keys(packageInfoByVersion)) {
     newRegistryJson.versions[version] = registryJson.versions[version];
     newRegistryJson.time[version] = "1970-01-01T00:00:00.000Z";
+    newRegistryJson["dist-tags"].latest = version;
   }
 
   return newRegistryJson;
@@ -250,6 +251,12 @@ export function pruneRegistryJsonFiles(
       const registryJson: RegistryJson = JSON.parse(
         new TextDecoder("utf-8").decode(Deno.readFileSync(path))
       );
+
+      //DEBUG: Uncomment the following to keep copy of non-pruned registry.json file
+      //Deno.writeFileSync(
+      //  path + ".orig",
+      //  new TextEncoder().encode(JSON.stringify(registryJson))
+      //);
 
       const newRegistryJson = pruneRegistryJson(
         registryJson,
@@ -300,6 +307,7 @@ export function pruneMetaJson(
 
   for (const version of Object.keys(packageInfoByVersion)) {
     newMetaJson.versions[version] = metaJson.versions[version];
+    newMetaJson.latest = version;
   }
   return newMetaJson;
 }
@@ -313,6 +321,12 @@ export function pruneMetaJsonFiles(
       const metaJson: MetaJson = JSON.parse(
         new TextDecoder("utf-8").decode(Deno.readFileSync(path))
       );
+
+      //DEBUG: Uncomment the following to keep copy of non-pruned meta.json file
+      //Deno.writeFileSync(
+      //  path + ".orig",
+      //  new TextEncoder().encode(JSON.stringify(metaJson))
+      //);
 
       const newMetaJson = pruneMetaJson(metaJson, jsrPackages, registry);
 
